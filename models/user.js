@@ -129,6 +129,6 @@ userSchema.post("save", function(doc,next){
     next();
 })
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("users", userSchema);
 
 

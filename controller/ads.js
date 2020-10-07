@@ -5,51 +5,21 @@ var slugify = require("slugify");
 const CustomError = require("../helpers/error/customError");
 const cities = require("../public/static/json/cities.json");
 const carbrands = require("../public/static/json/cars.json");
-const { Query } = require("mongoose");
 
-/* let text;
-carbrands.forEach(e=>{
-    let slugifiedBrand= slugify(e.brand,{
-        replacement: '-',  // replace spaces with replacement character, defaults to `-`
-        remove: /[*+~()'"!:@]?/g, // remove characters that match regex, defaults to `undefined`
-        lower: true,      // convert to lower case, defaults to `false`
-        strict: false,     // strip special characters except replacement, defaults to `false`
-    });
-    let slugifiedModels= []
-    e.models.forEach(s =>{
-         
-        slugifiedModels.push( 
-            slugify(s,{
-                replacement: '-',  // replace spaces with replacement character, defaults to `-`
-                remove: /[*+~()'"!:@]?/g, // remove characters that match regex, defaults to `undefined`
-                lower: true,      // convert to lower case, defaults to `false`
-                strict: false,     // strip special characters except replacement, defaults to `false`
-            })
-        );
-    });
-    //console.log(slugifiedBrand+" "+slugifiedModels+"\n")
-    var b = "";
-    slugifiedModels.forEach((t,i) =>{
-        if(i===0)b+=`${t}",`
-        else if(i===slugifiedModels.length-1)b+=`"${t}`
-        else b+=`"${t}",`
-        
-    })
-    text += `{
-    "brand" : "${slugifiedBrand}",
-    "models" : ["${b}"]
-    },`
-    ;
-});
 
-console.log(text); */
+
 const advertise = AsyncHandler(async function(req,res,next){
     const user_id = req.user.id;
-    const {title,brand,series,model,year,fuel,gear,km,status,description,engine_power,engine_volume,car_traction,color
+    const {title,brand,series,price,city,model,year,fuel,gear,km,status,description,engine_power,engine_volume,car_traction,color
     ,guarantee,plate_nation,trade,from} = req.body;
     let x = false
+    console.log(brand.toLowerCase())
+
+    if(!brand ||!series){
+        return next(new CustomError("please type brand and series",400))
+    }    
     carbrands.forEach(e =>{
-        if(brand.toLowerCase()===e.brand && e.models.indexOf(series.toLowerCase())!==-1){
+        if(brand.toLowerCase()==e.brand && e.models.indexOf(series.toLowerCase())!==-1){
             x = true;
         }
     });
@@ -57,15 +27,15 @@ const advertise = AsyncHandler(async function(req,res,next){
         return next(new CustomError("Brand or series is not in the lists",400));
     }
     //brand ve series gönderirken slugify yap...
+    const user = await User.findById(user_id);
     const adv = await Ads.create({
         title,
         brand: brand.toLowerCase(),
         series: series.toLowerCase(),
-        model: model,year,fuel,gear,km,status,description,engine_power,engine_volume,car_traction,color
-    ,guarantee,plate_nation,trade,from
+        model: model,year,fuel,price,city,gear,km,status,description,engine_power,engine_volume,car_traction,color
+    ,guarantee,plate_nation,trade,from,
+        user : user_id
     });
-    const user = await User.findById(user_id);
-    adv.user = user._id;
     user.ads.push(adv._id);
     await user.save();
     await adv.save();
@@ -97,166 +67,80 @@ const getSpecifiedAdv = AsyncHandler(async function(req,res,next){
         advertisement: adv
     });
 });
-
-
-
-
 const getSpecifiedBrand = AsyncHandler(async function(req,res,next){
-    var brand = (req.params.brand);
-    var matched = false;
-    if(process.env.NODE_ENV === "production"){
-            if(brand.toLowerCase() !== brand){
-            console.log("eşit değil")
-            carbrands.forEach((e)=>{
-                if(brand.toLowerCase() === e.brand){
-                    matched= true;
-                    res.redirect(`/api/ads/${brand.toLowerCase()}`);
-                }
-            });
-        }
-    }
-    
-    if(!matched){
-        carbrands.forEach((e)=>{
-            if(brand.toLowerCase() === e.brand){
-                matched= true;
+        var matched = false
+        let brand = new RegExp(req.params.brand,"i");
+        for(var i = 0 ; i<carbrands.length ;i++){
+            var exp = new RegExp(carbrands[i].brand,"i");
+            if(brand.test(exp)){
+                matched=true;
+                break;
             }
-        });
-        if(!matched){return next(new CustomError("Not Found",404));}
-    }
-    const cars = await Ads.find({
-        isApproved: true,
-        brand : brand
-    })
-    res.status(200).json({
-        success: true,
-        cars: cars
-    });
+        }
+        if(!matched){
+            return next(new CustomError("Not Found",404))
+        }
+        const query = req.queryFunction;
+        const total = req.total;
+        const pagination = req.pagination;
+        const cars = await query
+        res.status(200).json({
+            success: true,
+            pagination:pagination,
+            total:total,
+            cars: cars
+        }); 
 });
-
-
-
-
 const getSpecifiedSeries = AsyncHandler(async function(req,res,next){
-    const brand = (req.params.brand);
-    const series = (req.params.series);
-    var matched = false;
-    if(process.env.NODE_ENV ==="production"){
+    var matched = false
+    let brand = new RegExp(req.params.brand,"gi");
+    let series = new RegExp(req.params.series,"gi");
 
-        if(brand.toLowerCase() !== brand || series.toLowerCase() !==series){
-            console.log("eşit değil")
-            carbrands.forEach((e)=>{
-                if(brand.toLowerCase() === e.brand && e.models.indexOf(series.toLowerCase()) !== -1){
-                    matched= true;
-                    res.redirect(`/api/ads/${brand.toLowerCase()}/${series.toLowerCase()}`);
+    for(var i = 0 ; i<carbrands.length ;i++){
+        var exp = new RegExp(carbrands[i].brand,"gi");
+        if(brand.test(exp)){
+            carbrands[i].series
+            for(var j = 0 ; j<carbrands[i].models.length ;j++){
+                var expSeries = new RegExp(carbrands[i].models[j],"gi");
+                if(series.test(expSeries)){
+                    i=carbrands.length;
+                    matched=true;
+                    break;
                 }
-            });
-        }
-    }
-    if(!matched){
-        carbrands.forEach((e)=>{
-            if(brand.toLowerCase() === e.brand && e.models.indexOf(series.toLowerCase()) !==-1){
-                matched= true;
             }
-        });
-        if(!matched){return next(new CustomError("Not Found",404));}
+            
+        }
     }
-
     if(!matched){
-        return next(new CustomError("Not Found",404));
+        return next(new CustomError("Not Found",404))
     }
-    
-
-    const cars = await Ads.find({
-        isApproved: true,
-        brand :brand,
-        series:series
-    });
-   res.status(200).json({
-        success: true,
-        cars: cars
-    });
-
-})
-
-const getAllAdvs = AsyncHandler(async function(req,res,next){
-    //queries
-    let query = Ads.find();
-    let searchObject={}
-    //Search query
-    if(req.query.search){
-        const regex = new RegExp(req.query.search,"gi")
-        query = query.where({title:regex});
-    }
-    if(req.query.fuel){
-        const regex = new RegExp(req.query.fuel,"gi")
-        query = query.where({fuel:regex});
-    }
-    if(req.query.gear){
-        const regex = new RegExp(req.query.gear,"gi")
-        query = query.where({gear:regex});
-    }
-    if(req.query.minYear||req.query.maxYear){
-        query=query.where({
-           $and:[
-           {year: { $gte :req.query.minYear?parseInt(req.query.minYear):0 } },
-           {year :{ $lte :req.query.maxYear?parseInt(req.query.maxYear):2050}}
-            ]
-        }
-        );
-    }
-    if(req.query.minKm||req.query.maxKm){
-        query=query.where({
-           $and:[
-           {km: { $gte :req.query.minKm?parseInt(req.query.minKm):0 } },
-           {km :{ $lte :req.query.maxKm?parseInt(req.query.maxKm):99999999999999}}
-            ]
-        }
-        );
-    }
-    if(req.query.maxPrice||req.query.minPrice){
-        query=query.where({
-           $and:[
-           {price: { $gte :req.query.minPrice?parseInt(req.query.minPrice):0 } },
-           {price :{ $lte :req.query.maxPrice?parseInt(req.query.maxPrice):99999999999999}}
-            ]
-        }
-        );
-    }
-    //cities
-    if(req.query.cityCode){
-        req.query.cityCode.forEach(e=>{
-            console.log(cities[`${e}`]);
-            const regex =new RegExp(cities[`${e}`]);
-            query=query.where({city: regex});
-        })
-        const regex =new RegExp(cities[`${req.query.cityCode[0]}`]);
-        query=query.where({city: regex});
-    }
-    //model filter
-    const populate = true
-    const populateObject = {
-        path: "user"
-    }
-
-
-    query = query.populate(populateObject);
-
-
-
-
-    
-
-
-    const cars = await query /* Ads.find({
-        //"km":{$range:[req.query.minKm?parseInt(req.query.minKm):0,req.query.maxKm?parseInt(req.query.maxKm):500000000]}
-    } ).where();*/
+    const query = req.queryFunction;
+    const total = req.total;
+    const pagination = req.pagination;
+    const cars = await query
     res.status(200).json({
         success: true,
+        pagination:pagination,
+        total:total,
         cars: cars
+    }); 
+})
+const getAllAdvs = AsyncHandler(async function(req,res,next){
+    /*  req.queryFunction = query;
+        req.total = total;
+        req.pagination = pagination; */
+     
+    const query = req.queryFunction;
+    const total = req.total;
+    const pagination = req.pagination;
+    const cars = await query;
+    res.status(200).json({
+        success:true,
+        total:total,
+        pagination:pagination,
+        cars : cars
     });
 });
-
 const updateAd = AsyncHandler(async function(req,res,next){
     const ad_id = req.params.id;
     const info = req.body
@@ -286,7 +170,6 @@ const updateAd = AsyncHandler(async function(req,res,next){
     })
     
 });
-
 const imageUpload = AsyncHandler(async function(req,res,next){
 
     const ad = await Ads.findById(req.params.id);

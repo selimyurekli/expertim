@@ -121,7 +121,9 @@ const adsSchema =  new mongoose.Schema({
     },
     user: {
         type: mongoose.Types.ObjectId,
-        ref:"user"
+        ref: "users",
+        required:true,
+        index: true 
     }
 
 },{timestamps:true});
@@ -140,6 +142,7 @@ adsSchema.pre("save", async function(next){
         },
     });
     const adUri  =null;
+    
     const user =await User.findById(this.user);
     try{ 
         let info = await transporter.sendMail({

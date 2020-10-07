@@ -5,12 +5,24 @@ const router = express.Router();
 const {adImagesUpload} = require("../helpers/images/adImagesUpload")
 const fs = require('file-system');
 const CustomError = require("../helpers/error/customError");
+const {adsQueryMiddleware} = require("../middlewares/libraries/query");
+
+
 router.post("/advertise",getAccessToRoute,advertise);
 //query kısmına geç
-router.get("/",getAllAdvs);
-router.get("/:id",getSpecifiedAdv);
-router.get("/:brand",getSpecifiedBrand);
-router.get("/:brand/:series",getSpecifiedSeries);
+router.get("/",adsQueryMiddleware({
+    path:"user",
+    select: "name"
+}), getAllAdvs);
+router.get("/specific/:id",getSpecifiedAdv);
+router.get("/:brand",adsQueryMiddleware({
+    path:"user",
+    select: "name"
+}),getSpecifiedBrand);
+router.get("/:brand/:series",adsQueryMiddleware({
+    path:"user",
+    select: "name"
+}),getSpecifiedSeries);
 router.put("/update/:id",[getAccessToRoute,checkAdExists,getOwnerAccess],updateAd);
 router.put("/imageupload/:id",[getAccessToRoute,checkAdExists,getOwnerAccess,(req,res,next)=>{
     var made = fs.mkdir(`public/static/ad_images/ad_images_${req.params.id}`,511);

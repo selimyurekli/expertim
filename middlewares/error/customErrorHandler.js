@@ -9,7 +9,7 @@ const customErrorHandler=function(err,req,res,next){
                 custErr = new CustomError("Please Try logging with different email", 400);
             };
             if(custErr.name==="CastError"){
-                custErr = new CustomError("CastError", 400);
+                custErr = new CustomError("CastError", 500);
             };
 
 

@@ -13,7 +13,6 @@ const register = AsyncHandler(async function(req,res,next){
         email,
         password
     }); 
-    console.log(user.verifyToken);
     
     await sendJWTFromUserForRegister(user,res,next);
 });
