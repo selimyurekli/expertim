@@ -5,8 +5,34 @@ const {sendJWTFromUser,sendJWTFromUserForRegister} = require("../helpers/authori
 const CustomError = require("../helpers/error/customError");
 const{isSame} = require("../helpers/password/decrypt");
 const jwt = require("jsonwebtoken");
+const carbrands = require("../public/json/cars.json");
 
+const getRegisterPage =  AsyncHandler(async function(req,res,next){    
+    res.render("register",{
+        isLogged:req.isLogged,
+    });
+});
+ 
+const getLoginPage =  AsyncHandler(async function(req,res,next){    
+    res.render("login",{
+        isLogged:req.isLogged,
+    });
+});
+const getForgotPasswordPage =  AsyncHandler(async function(req,res,next){  
+      
+    res.render("forgotpassword",{
+        isLogged:req.isLogged,
+    });
+});
+const getResetPasswordPage =  AsyncHandler(async function(req,res,next){    
+    res.render("resetpassword",{
+        isLogged:req.isLogged,
+        user:req.logged,
+        postUrl:req._parsedOriginalUrl.path
+    });
+});
 const register = AsyncHandler(async function(req,res,next){
+   
     const {name, email, password } = req.body;
     const user = await User.create({
         name,
@@ -17,33 +43,61 @@ const register = AsyncHandler(async function(req,res,next){
     await sendJWTFromUserForRegister(user,res,next);
 });
 const getUser = AsyncHandler(async function(req,res,next){
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).populate("ads","year brand series price isAproved isChecked");
+    
     res.status(200).
-    json({
+    render("profile",{
         success:true,
-        user:user
-    })
-})
+        user:user,
+        isLogged:req.isLogged,
+        carbrands:carbrands
+    });
+});
 const login = AsyncHandler(async function(req,res,next){
     const {email, password} = req.body;
+    var err;
+    
     if(!email|| !password){
-        return next(new CustomError("Put the inputs in their place",400));
+        
+
+        err =new CustomError("Put the inputs in their place",400) 
+        /* return next(new CustomError("Put the inputs in their place",400)); */
     }
     const user = await User.findOne({email: email}).select("+password");
     if(!user){
-        return next(new CustomError("No user with that email",400));
+        err =new CustomError("No user with that email",400)
+        /* return next(new CustomError("No user with that email",400)); */
     }
     const match = await isSame(password,user.password);
     if(!(match)){
-        return next(new CustomError("Wrong Password",400));
+        console.log("match")
+        err = new CustomError("Wrong Password",400)
+        /* return next(new CustomError("Wrong Password",400)); */
     }
     if(user.blocked){
-        return next(new CustomError("Your account is blocked!!! You can not log in",400));
+        console.log("blocked")
+
+        err = new CustomError("Your account is blocked!!! You can not log in",400)
+       /*  return next(new CustomError("Your account is blocked!!! You can not log in",400)); */
     }
     if(!user.isVerified){
-        return next(new CustomError("Please verify your account otherwise you can not contunie!",400));
+        console.log("isVerified")
+        err = new CustomError("Please verify your account otherwise you can not contunie!",400)
+        /* return next(new CustomError("Please verify your account otherwise you can not contunie!",400)); */
     }
-    sendJWTFromUser(user,res) ;
+    if(err){
+        
+        res.status(err.code ||500 )
+            .render("loginAction",{
+                success: false,
+                message: err.message || "Error",
+                statusCode: err.code ||500
+            });
+    }
+    else{
+        sendJWTFromUser(user,res) ;
+    }
+    
 });
 const forgotPassword =AsyncHandler(async function(req,res,next){
     const {email} = req.body;
@@ -51,7 +105,7 @@ const forgotPassword =AsyncHandler(async function(req,res,next){
     hashedToken = user.generateResetPasswordToken();
 
     await user.save();  
-    let testAccount = await nodemailer.createTestAccount();
+    
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -62,19 +116,24 @@ const forgotPassword =AsyncHandler(async function(req,res,next){
         },
     });
     const resetPasswordUrl = `http://localhost:5000/api/auth/resetpassword?resetPasswordToken=${hashedToken}`;
+  
       
-      
-    try{ let info = await transporter.sendMail({
+    try{ 
+        let info = await transporter.sendMail({
         from:"duckdnsdeneme777@gmail.com", // sender address
         to: email, // list of receivers
         subject: "Reset Password ✔", // Subject line
         text: "Reset password:", // plain text body
         html: `Reset your password from <a href=${resetPasswordUrl}>here</a>`, // html body
-    }); 
-      res.status(200).json({
+        }); 
+        res.status(200).
+        render("forgotpasswordAction",{
           success: true,
+          isLogged:req.isLogged,
+          user:req.logged,
           message: "Mail sent to "+email
-      });}
+        });
+    }
       catch{
         user.resetPasswordToken = undefined;
         user.resetPasswordTokenExpire= undefined;
@@ -107,10 +166,10 @@ const resetPassword = AsyncHandler(async function(req,res,next){
     user.resetPasswordToken= undefined;
     await user.save();
 
-    res.status(200).json({
+    res.status(200).render("resetpasswordAction",{
         success:true,
-        data: user
-    })
+        message:"Parolanız başarılı bir şekilde değiştirildi. Lütfen giriş yapınız, sizi giriş sayfasına yönlendiriyoruz... "
+    });
 
 });
 const logout = AsyncHandler(async function(req,res,next){
@@ -129,7 +188,7 @@ const logout = AsyncHandler(async function(req,res,next){
     return res
     .status(200)
     .clearCookie("access_token")
-    .json({
+    .render("logout",{
         success: true,
         message:"Logout successfull" 
     });
@@ -140,19 +199,17 @@ const imageUpload = AsyncHandler(async function(req,res,next){
     const user = await User.findById(req.user.id);
     user.profile_image =req.file.filename;
     await user.save();
-    res.status(200).json({
-        success: true,
-        message: "Successfully uploaded profile image",
-        user : user
-    });
+    res.status(200).redirect("/api/auth/profile");
 
 
 
 })
 const update = AsyncHandler(async function(req,res,next){
     const info = req.body;
-    if(info.hasOwnProperty("email")||info.hasOwnProperty("role")||info.hasOwnProperty("ads")||info.hasOwnProperty("Geolocation")
-    ||info.hasOwnProperty("profile_image")||info.hasOwnProperty("blocked")||info.hasOwnProperty("resetPasswordToken")||info.hasOwnProperty("resetPasswordTokenExpire")){
+    
+    if(({}).hasOwnProperty.call(info, 'email')||({}).hasOwnProperty.call(info, 'role')||({}).hasOwnProperty.call(info, 'ads')||({}).hasOwnProperty.call(info, 'geolocation')
+    ||({}).hasOwnProperty.call(info, 'profile_image')||({}).hasOwnProperty.call(info, 'blocked')||({}).hasOwnProperty.call(info, 'resetPasswordToken')||({}).hasOwnProperty.call(info, 'resetPasswordTokenExpire')
+    ||({}).hasOwnProperty.call(info, 'isVerified')||({}).hasOwnProperty.call(info, 'verifyToken')){
         return next(new CustomError("You can only update name, place, website and phone",400))
     }
     if(Object.entries(info).length===0){
@@ -162,11 +219,7 @@ const update = AsyncHandler(async function(req,res,next){
         ...info
     });
     user = await User.findById(req.user.id);
-    console.log(user);
-    res.status(200).json({
-        success :false,
-        data: user
-    })
+    res.status(200).redirect("profile");
 
 
 
@@ -183,12 +236,12 @@ const verifyAccount = AsyncHandler(async function(req,res,next){
     }
     verifyToken = req.params.verifyToken;
     if(verifyToken === user.verifytoken){
-        if(user.isVerified){
+        /* if(user.isVerified){
             return next(new CustomError("You have already verified your account",400))
-        }
+        } */
         user.isVerified = true;
         await user.save();
-        res.status(200).json({
+        res.status(200).render("verifiedaccountAction",{
             success:true,
             message: "You successfully verified your account!"
         });
@@ -199,6 +252,9 @@ const verifyAccount = AsyncHandler(async function(req,res,next){
 })
 
 module.exports = {
+    getRegisterPage,
+    getForgotPasswordPage,
+    getLoginPage,
     register,
     login,
     forgotPassword,
@@ -207,5 +263,6 @@ module.exports = {
     imageUpload,
     update,
     getUser,
-    verifyAccount
+    verifyAccount,
+    getResetPasswordPage
 }

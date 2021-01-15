@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../models/user");
 const nodemailer = require("nodemailer");
-        
+const CustomError = require("../helpers/error/customError")        
 const brands =["toyota", "bmw","mercedes","porsche"];
 
 const adsSchema =  new mongoose.Schema({
@@ -56,7 +56,7 @@ const adsSchema =  new mongoose.Schema({
         type : Number
     },
     car_traction: {
-        typle : String
+        type : String
     },
     color: {
         type : String
@@ -65,11 +65,11 @@ const adsSchema =  new mongoose.Schema({
         type: Boolean
     },
     plate_nation: {
-        type : String
+        type : String,
     },
     trade: {
         type : Boolean,
-        defauld: false
+        default: false
     },
     status:{   
         type : String,
@@ -95,6 +95,9 @@ const adsSchema =  new mongoose.Schema({
     city:{
         type:String,
         required:true
+    },
+    town:{
+        type:String
     },
     images:[
         {
@@ -129,6 +132,7 @@ const adsSchema =  new mongoose.Schema({
 },{timestamps:true});
 
 adsSchema.pre("save", async function(next){
+    
     if(!this.isModified("isApproved")){
         next()
     }
@@ -137,8 +141,8 @@ adsSchema.pre("save", async function(next){
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-          user: "duckdnsdeneme777@gmail.com", // generated ethereal user
-          pass:"159753.gs", // generated ethereal password
+          user: process.env.SMTP_EMAIL, // generated ethereal user
+          pass: process.env.SMTP_PASSWORD, // generated ethereal password
         },
     });
     const adUri  =null;

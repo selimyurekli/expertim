@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+
+    <%#if(success==false&&statusCode==410){  %> 
+        <!-- <meta http-equiv="refresh" content="2; url=/api/auth/login"> -->
+    <%#}%> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+   
+    <%- include('../partials/head')  %>
+
+</head>
+
+<body>
+    <div class="page-content">
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+            <!-- Content area -->
+            <div class="content d-flex justify-content-center align-items-center">
+
+                <!-- Container -->
+                <div class="flex-fill">
+
+                    <!-- Error title -->
+                    <div class="text-center mb-3">
+                        <h1 class="error-title"><%= statusCode %> </h1>
+                        <h5>Oops, <%= message %>!</h5>
+                    </div>
+                    <!-- /error title -->
+
+
+                    <!-- Error content -->
+                    <div class="row">
+                        <div class="col-xl-4 offset-xl-4 col-md-8 offset-md-2">
+                            <!-- Buttons -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href="/" class="btn btn-primary btn-block"><i class="icon-home4 mr-2"></i> Ana Sayfa</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="/api/auth/login" class="btn btn-danger btn-block"><i class="icon-reading mr-2"></i> Giriş yap</a>
+                                </div>
+                            </div>
+                            <!-- /buttons -->
+
+                        </div>
+                    </div>
+                    <!-- /error wrapper -->
+
+                </div>
+                <!-- /container -->
+
+            </div>
+            <!-- /content area -->
+
+
+
+
+        </div>
+        <!-- /main content -->
+
+    </div>
+</body>
+
+</html>

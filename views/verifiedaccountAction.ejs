@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%if(success){ %>
+        
+        <meta http-equiv="refresh" content="3; url=/api/auth/login"> 
+    <% } %> 
+    <title>Parola sıfırla</title>
+    <%- include('partials/head')  %>
+
+</head>
+
+<body>
+    <%- include('partials/KayıtOlNavbar')  %>
+
+
+    <div class="page-content">
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+            <!-- Content area -->
+            <div class="content d-flex justify-content-center align-items-center">
+
+                <!-- Container -->
+                <div class="flex-fill">
+
+                    <!-- Error title -->
+                    <div class="text-center mb-3">
+                        <h5>Tebrikler!! </h5>
+                        <img style="margin: auto;"width="15%"src="../../../global_assets/images/SuccessVerification.png" alt="verification"><br>
+                        <h4><%= message %> </h5>
+                        
+                    </div>
+                    <!-- / title -->
+
+
+                    <!-- Error content -->
+                    <div class="row">
+                        <div class="col-xl-4 offset-xl-4 col-md-8 offset-md-2">
+                            <!-- Buttons -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a href="/" class="btn btn-primary btn-block"><i class="icon-home4 mr-2"></i> Ana
+                                        Sayfa</a>
+                                </div>
+                            </div>
+                            <!-- /buttons -->
+
+                        </div>
+                    </div>
+                    <!-- /error wrapper -->
+
+                </div>
+                <!-- /container -->
+
+            </div>
+            <!-- /content area -->
+
+
+
+
+        </div>
+        <!-- /main content -->
+
+    </div>
+</body>    

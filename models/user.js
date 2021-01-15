@@ -33,7 +33,19 @@ const userSchema = new mongoose.Schema({
     city: {
         type : String
     },
-    Geolocation: {
+    town: {
+        type : String
+    },
+    instagram: {
+        type : String
+    },
+    facebook: {
+        type : String
+    },
+    twitter: {
+        type : String
+    },
+    geolocation: {
         type:Number
     },
     numberOfAds: {
@@ -67,8 +79,6 @@ const userSchema = new mongoose.Schema({
         default: false
     }
 
-
-
 },{timestamps:true});
 
 userSchema.methods.generateJWT = function(){
@@ -76,12 +86,14 @@ userSchema.methods.generateJWT = function(){
         _id : this._id,
         name: this.name,
         email : this.email,
-        isVerified: this.isVerified
+        profile_image:this.profile_image,
+        city:this.city,
+        isVerified: this.isVerified,
+        role:this.role
     };
     const token = jwt.sign(payload,process.env.JWT_KEY,{
         algorithm: "HS256",
         expiresIn: parseInt(process.env.JWT_EXPIRES)*60,
-
     });
     return token;
 }

@@ -8,7 +8,7 @@ var storage = multer.diskStorage({
         
       const rootDir = path.dirname(require.main.filename);
       
-      cb(null, rootDir+"/public/static/profile_images")
+      cb(null, rootDir+"/public/profile_images")
     },
     filename: async function (req, file, cb) {
       //mimetype is like "image/png"

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <%- include('partials/head')  %>
+</head>
+<body>
+    <%if(success){  %> 
+    <div class="container">
+    
+    <% if(ads.length==0){ %>
+        <div class="container" style="margin-top: 4%">
+            <div class="alert alert-warning alert-styled-left alert-arrow-left alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+                <span class="font-weight-semibold">Tüm </span>ilanlar <a href="#" class="alert-link">onaylandı.</a><a href="/"> Ana sayfaya dön</a>
+            </div>
+        </div>
+    <% } %>          
+    
+    <% for(var a = 0 ;  a < ads.length ; a++){ %>
+        
+        <% if(a%4!=0){%>
+            <div class="col-xl-4 col-sm-6" style="margin: 1% 0;">
+                <div class="card" style="height: 100%;">
+                    <div class="card-img-actions mx-1 mt-1" style="height: 75%;">
+                        <img class="card-img" style="object-fit:cover !important;width:100%;height:100%;" src="<%= ads[a].images[0]?("/ad_images/"+ads[a].images[0]):"/../../../../global_assets/images/placeholders/placeholder.jpg" %>"  alt=<%=ads[a].images[0] %>>
+                        <div class="card-img-actions-overlay card-img" >
+                            <a href=<%="/api/ads/specific/"+ads[a].id %> class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+                                İncele
+                            </a>
+                            
+                        </div>
+                    </div>
+    
+                    <div class="card-body text-center">
+                        <h6 class="font-weight-semibold mb-0"><%=ads[a].title %> </h6>
+                        <span class="d-block text-muted"><%=ads[a].brand%>/<%=ads[a].series %>  </span>
+    
+                        <ul class="list-inline list-inline-condensed mt-3 mb-0">
+                            <li class="list-inline-item">
+                                <form action=<%= "/api/expert/advertiseapprove/" + ads[a].id %>  method="post"><button type="submit"class="btn btn-outline bg-success btn-icon text-success border-success border-2 rounded-round"></form>
+                                <i class="icon-check"></i></a>
+                            </li>
+                            <li class="list-inline-item"><a href=<%= "/api/expert/advertisedisapprove/" + ads[a].id %>   class="btn btn-outline bg-danger btn-icon text-danger border-danger border-2 rounded-round">
+                                <i class="icon-cross"></i></a>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <% if(a%4==3){ %>
+                </div>
+            <% } %>  
+        <% }else{%>
+            <div class="row">
+                <div class="col-xl-4 col-sm-6" style="margin: 1% 0;">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-img-actions mx-1 mt-1" style="height: 75%;">
+                            <img class="card-img" style="object-fit:cover !important;width:100%;height:100%;" src="<%= ads[a].images[0]?("/ad_images/"+ads[a].images[0]):"/../../../../global_assets/images/placeholders/placeholder.jpg" %>"  alt=<%=ads[a].images[0] %>>
+                            <div class="card-img-actions-overlay card-img" >
+                                <a href=<%="/api/ads/specific/"+ads[a].id %> class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+                                    İncele
+                                </a>
+                                
+                            </div>
+                        </div>
+        
+                        <div class="card-body text-center">
+                            <h6 class="font-weight-semibold mb-0"><%=ads[a].title %> </h6>
+                            <span class="d-block text-muted"><%=ads[a].brand%>/<%=ads[a].series %>  </span>
+        
+                            <ul class="list-inline list-inline-condensed mt-3 mb-0">
+                                <li class="list-inline-item">
+                                    <form action=<%= "/api/expert/advertiseapprove/" + ads[a].id %>  method="post"><button type="submit"class="btn btn-outline bg-success btn-icon text-success border-success border-2 rounded-round"></form>
+                                    <i class="icon-check"></i></a>
+                                </li>
+                                <li class="list-inline-item"><a href=<%= "/api/expert/advertisedisapprove/" + ads[a].id %>   class="btn btn-outline bg-danger btn-icon text-danger border-danger border-2 rounded-round">
+                                    <i class="icon-cross"></i></a>
+                                </li>
+                               
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        <% } %>      
+   
+        <% } %> 
+     </div>
+    </div>
+    <footer id="footer" style="position: fixed; bottom: 0; ">
+        <%- include('partials/footer')  %>
+                </footer>
+                <% }else{ %>
+                <%- include('errors/error')  %>
+                <% } %>
+</body>
+
+</html>

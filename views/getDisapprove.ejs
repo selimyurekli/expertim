@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expertim</title>
+    <%- include('partials/head')  %>
+
+</head>
+
+<body>
+    <%if(success){  %> 
+    <div class="card mb-4">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Fiyat Öner</h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <p class="mb-4">Fiyatınızı aracın özelliklerine uygun olarak belirleyiniz.
+            </p>
+
+            <form action=<%="/api/expert/advertisedisapprove/"+ adv.id %> method= "POST">
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Önerme seçenekleri</legend>
+
+
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Önerilen Fiyat</label>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-git-pull-request"></i></span>
+                                </span>
+                                <input type="text" name = "recommendedPrice" class="form-control" placeholder="Önerdiğiniz fiyatı giriniz(₺)">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-success"type="submit">Gönder</button>
+                </fieldset>
+
+            </form>
+        </div>
+    </div>
+    <footer id="footer">
+        <%- include('partials/footer')  %>
+                </footer>
+                <% }else{ %>
+                <%- include('errors/error')  %>
+                <% } %>
+</body>
+
+</html>

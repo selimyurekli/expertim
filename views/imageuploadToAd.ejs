@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
+        type="text/css">
+    <link href="/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/layout.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+
+    <!-- Core JS files -->
+    <script src="/global_assets/js/main/jquery.min.js"></script>
+    <script src="/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <script src="/global_assets/js/plugins/loaders/blockui.min.js"></script>
+    <!-- /core JS files -->
+
+    <!-- Theme JS files -->
+    <script src="/global_assets/js/plugins/uploaders/fileinput/plugins/purify.min.js"></script>
+    <script src="/global_assets/js/plugins/uploaders/fileinput/plugins/sortable.min.js"></script>
+    <script src="/global_assets/js/plugins/uploaders/fileinput/fileinput.min.js"></script>
+
+    <script src="/assets/js/app.js"></script>
+    <script src="/global_assets/js/demo_pages/uploader_bootstrap.js"></script>
+    <!-- /theme JS files -->
+
+</head>
+
+<body class="">
+
+    <!-- Page content -->
+    <div class="page-content">
+
+
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+        
+
+
+            <!-- Content area -->
+            <div class="content">
+
+                <!-- Bootstrap file input -->
+                <div class="card">
+                    <div class="card-header header-elements-inline">
+                        <h5 class="panel-title">İlanınıza Fotoğraf Ekleyin</h5>
+                        <div class="header-elements">
+                            <div class="list-icons">
+                                <a class="list-icons-item" data-action="collapse"></a>
+                                <a class="list-icons-item" data-action="reload"></a>
+                                <a class="list-icons-item" data-action="remove"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        
+
+                        <form id= "form" method="POST"  enctype="multipart/form-data">
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label font-weight-semibold">Sürükleyin ve bırakın</label>
+                                <div class="col-lg-10">
+                                    <input type="file" name="photos"class="file-input" multiple="multiple" data-fouc>
+                                    <span class="form-text text-muted">Kabul edilen uzantılar <code>.jpeg</code>, <code>.jpg</code>, <code>.gif</code>, <code>.png</code>.</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /bootstrap file input -->
+
+                </div>
+                <!-- /content area -->
+
+
+
+
+            </div>
+            <!-- /main content -->
+
+        </div>
+        <!-- /page content -->
+
+
+
+        <div id="kvFileinputModal" class="file-zoom-dialog modal fade" tabindex="-1"
+            aria-labelledby="kvFileinputModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header align-items-center">
+                        <h6 class="modal-title">Detaylı İnceleme <small><span class="kv-zoom-title"></span></small></h6>
+                        <div class="kv-zoom-actions btn-group"><button type="button"
+                                class="btn btn-light btn-icon btn-header-toggle btn-sm btn-toggleheader"
+                                title="Toggle header" data-toggle="button" aria-pressed="false" autocomplete="off"><i
+                                    class="icon-menu-open"></i></button><button type="button"
+                                class="btn btn-light btn-icon btn-sm btn-fullscreen" title="Toggle full screen"
+                                data-toggle="button" aria-pressed="false" autocomplete="off"><i
+                                    class="icon-screen-full"></i></button><button type="button"
+                                class="btn btn-light btn-icon btn-sm btn-borderless" title="Toggle borderless mode"
+                                data-toggle="button" aria-pressed="false" autocomplete="off"><i
+                                    class="icon-alignment-unalign"></i></button><button type="button"
+                                class="btn btn-light btn-icon btn-sm btn-close" title="Close detailed preview"
+                                data-dismiss="modal" aria-hidden="true"><i
+                                    class="icon-cross2 font-size-base"></i></button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="floating-buttons btn-group"></div>
+                        <div class="kv-zoom-body file-zoom-content"></div>
+                        <button type="button" class="btn btn-navigate btn-prev" title="View previous file"><i
+                                class="icon-arrow-left32"></i></button> <button type="button"
+                            class="btn btn-navigate btn-next" title="View next file"><i
+                                class="icon-arrow-right32"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var form  = document.getElementById("form");
+            form.action = window.location.href
+            console.log(form)
+        </script>
+</body>
+
+</html>

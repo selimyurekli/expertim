@@ -4,6 +4,7 @@ const Ads = require("../../models/ads")
 const adsQueryMiddleware=function(options){
     return AsyncErrorWrapper(async function(req,res,next){
         
+        //req.session.current_url = 
         let query = Ads.find({isApproved:true}).select("title price km createdAt year brand series isApproved user");
         if(req.params.brand){
             var brand = new RegExp(req.params.brand,"gi");
@@ -74,7 +75,6 @@ const searchHelper = function(query,req){
     //cities
     if(req.query.cityCode){
         req.query.cityCode.forEach(e=>{
-            console.log(cities[`${e}`]);
             const regex =new RegExp(cities[`${e}`]);
             query=query.where({city: regex});
         })
@@ -98,8 +98,7 @@ const populateHelper = function(query,options){
  const paginationHelper = async function(query,req){
     //pagination
     var total = (await query).length
-    console.log(total)
-    var limit = parseInt(req.query.limit) || 5;
+    var limit = parseInt(req.query.limit) || 30;
     var page = parseInt(req.query.page) || 1 ;
     var startIndex = (page-1)*limit;
     var endIndex = page*limit

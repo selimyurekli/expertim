@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expertim</title>
+    <%- include('partials/head')  %>
+
+</head>
+<body>
+	
+	
+	<% if(isLogged){%>
+		
+        <%- include('partials/KullanıcılıNavbar')  %>
+    <%} %> 
+    <% if(!isLogged){%>
+        <%- include('partials/KayıtOlNavbar')  %>
+    <%} %> 
+    
+
+	<!-- Page content -->
+	<div class="page-content">
+        <%- include("partials/leftNav")  %> 
+		<!-- Main content -->
+		<div class="content-wrapper">
+
+			<!-- Page header -->
+			<div class="page-header page-header-light">
+				
+
+				<div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+					<div class="d-flex">
+						<div class="breadcrumb">
+							<a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Ana Sayfa</a>
+							<a href="/api/ads" class="breadcrumb-item">İlanlar</a>
+							<span class="breadcrumb-item active">Liste</span>
+						</div>
+
+						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+					</div>
+
+					<div class="header-elements d-none">
+						<div class="breadcrumb justify-content-center">
+							<a href="#" class="breadcrumb-elements-item">
+								<i class="icon-comment-discussion mr-2"></i>
+								Support
+							</a>
+
+							<div class="breadcrumb-elements-item dropdown p-0">
+								<a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">
+									<i class="icon-gear mr-2"></i>
+									Settings
+								</a>
+
+								<div class="dropdown-menu dropdown-menu-right">
+									<a href="#" class="dropdown-item"><i class="icon-user-lock"></i> Account security</a>
+									<a href="#" class="dropdown-item"><i class="icon-statistics"></i> Analytics</a>
+									<a href="#" class="dropdown-item"><i class="icon-accessibility"></i> Accessibility</a>
+									<div class="dropdown-divider"></div>
+									<a href="#" class="dropdown-item"><i class="icon-gear"></i> All settings</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /page header -->
+
+
+			<!-- Content area -->
+			<div class="content">
+
+				<!-- Inner container -->
+				<div class="d-md-flex align-items-md-start">
+
+					<!-- Left sidebar component -->
+					<%-include("partials/filter")  %> 
+					<!-- /left sidebar component -->
+
+
+					<!-- Right content -->
+					<div class="flex-fill overflow-auto">
+
+						<div class="table-responsive">
+							<%if(!cars || cars===""){%>
+							<p>Kriterlere uygun ilan bulunamamıştır.</p>
+							<%}else{%>
+								
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Model</th>
+										<th>Seri</th>
+										<th>İlan başlığı</th>
+										<th>Km</th>
+										<th>Yıl</th>
+										<th>Fiyat</th>
+										<th>İl</th>
+										<th>Durumu</th>
+										<!-- <th class="text-center" style="width: 30px;">
+													<div class="dropdown-menu dropdown-menu-right">
+														<a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Artan
+															Fiyata
+															Göre Sırala</a>
+														<a href="#" class="dropdown-item"><i class="icon-file-excel"></i>Azalan
+															Fiyata Göre Sırala </a>
+														<a href="#" class="dropdown-item"><i class="icon-file-word"></i> Artan
+															Yıla
+															Göre Sırala</a>
+														<a href="#" class="dropdown-item"><i class="icon-file-word"></i> Azalan
+															Yıla
+															Göre Sırala</a>
+														<a href="#" class="dropdown-item"><i class="icon-file-word"></i> Artan
+															Km'ye
+															Göre Sırala</a>
+														<a href="#" class="dropdown-item"><i class="icon-file-word"></i> Azalan
+															Km'ye Göre Sırala</a>
+													</div>
+												</th> -->
+									</tr>
+								</thead>
+								<tbody>
+		
+									<%for(var a = 0 ; a<cars.length;a++){%>
+										
+									<tr>
+										 
+										<td><%= cars[a].brand %> </td>
+										<td><%= cars[a].series %> </td>
+										<td><%= cars[a].title.substring(0,50) %></td>
+										<td><%= cars[a].km %></td>
+										<td><%= cars[a].year %></td>
+										<td><%= cars[a].price %>₺</td>
+										<td><%= cars[a].city %></td>
+										<%if(cars.status=="sıfır"){%>
+										<td><span class="badge badge-success">Sıfır</span></td>
+										<%}else{%>
+										<td><span class="badge badge-danger">İkinci El</span></td>
+										<%}%>
+									</tr>
+									<%}%>
+		
+		
+								</tbody>
+							</table>
+							<%}%>
+							</div>
+							<!-- Pagination -->
+						<div class="d-flex justify-content-center pt-3 mb-3">
+							<ul class="pagination">
+								<li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-small-left"></i></a></li>
+								<li class="page-item active"><a href="#" class="page-link">1</a></li>
+								<li class="page-item"><a href="#" class="page-link">2</a></li>
+								<li class="page-item"><a href="#" class="page-link">4</a></li>
+								<li class="page-item"><a href="#" class="page-link">5</a></li>
+								<li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-small-right"></i></a></li>
+							</ul>
+							<ul class="pagination">
+								<li class="page-item"><a href="#" class="page-link">Son Sayfa</a></li>
+							</ul>
+						</div>
+						<!-- /pagination -->
+						</div>
+
+						
+
+					</div>
+					<!-- /right content -->
+
+				</div>
+				<!-- /inner container -->
+
+			</div>
+			<!-- /content area -->
+
+
+			
+
+		</div>
+		<!-- /main content -->
+
+	</div>
+	<!-- /page content -->
+    <%-include("partials/footer") %> 
+
+
+</body>
+</html>

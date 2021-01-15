@@ -1,0 +1,119 @@
+<div
+	class="sidebar sidebar-light bg-transparent sidebar-component sidebar-component-left border-0 shadow-0 sidebar-expand-md">
+
+	<!-- Sidebar content -->
+	<div class="sidebar-content">
+
+		<!-- Filter -->
+		<div class="card">
+			<div class="card-header bg-transparent header-elements-inline">
+				<span class="text-uppercase font-size-sm font-weight-semibold">Filtrele</span>
+				<div class="header-elements">
+					<div class="list-icons">
+						<a class="list-icons-item rotate-180" data-action="collapse"></a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="card-body">
+				
+				<form action="/api/ads/filter" method="POST">
+					<div class="form-group form-group-feedback form-group-feedback-left">
+						<input type="search" name="search" class="form-control" placeholder="İlanlarda ara">
+						<div class="form-control-feedback">
+							<i class="icon-reading text-muted"></i>
+						</div>
+					</div>
+
+					<div class="card card-collapsed">
+						<div class="card-header bg-transparent header-elements-inline">
+							<span class="text-uppercase font-size-sm font-weight-semibold">Fiyat</span>
+							<div class="header-elements">
+								<div class="list-icons">
+									<a class="list-icons-item rotate-180" data-action="collapse"></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-body">
+								<div class="form-group form-group-feedback form-group-feedback-left">
+									<input type="search" name="maxPrice"class="form-control" placeholder="Max fiyat">
+									<div class="form-control-feedback">
+										<i class="icon-reading text-muted"></i>
+									</div>
+								</div>
+								<div class="form-group form-group-feedback form-group-feedback-left">
+									<input type="search" name="minPrice" class="form-control" placeholder="Min Fiyat">
+									<div class="form-control-feedback">
+										<i class="icon-reading text-muted"></i>
+									</div>
+								</div>
+						</div>
+					</div>
+					<!-- Yıl -->
+					<div class="card card-collapsed">
+						<div class="card-header bg-transparent header-elements-inline">
+							<span class="text-uppercase font-size-sm font-weight-semibold">Yıl</span>
+							<div class="header-elements">
+								<div class="list-icons">
+									<a class="list-icons-item rotate-180" data-action="collapse"></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-body">
+								<div class="form-group form-group-feedback form-group-feedback-left">
+									<input type="search" name = "maxYear"class="form-control" placeholder="Max Yıl">
+									<div class="form-control-feedback">
+										<i class="icon-reading text-muted"></i>
+									</div>
+								</div>
+								<div class="form-group form-group-feedback form-group-feedback-left">
+									<input type="search" name = "minYear"class="form-control" placeholder="Min Yıl">
+									<div class="form-control-feedback">
+										<i class="icon-reading text-muted"></i>
+									</div>
+								</div>
+						</div>
+					</div>
+					<!-- /Yıl -->
+					<!-- Km -->
+					<div class="card card-collapsed">
+						<div class="card-header bg-transparent header-elements-inline">
+							<span class="text-uppercase font-size-sm font-weight-semibold">Km</span>
+							<div class="header-elements">
+								<div class="list-icons">
+									<a class="list-icons-item rotate-180" data-action="collapse"></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-body">
+								<div class="form-group form-group-feedback form-group-feedback-left">
+									<input type="search" name = "maxKm"class="form-control" placeholder="Max Km">
+									<div class="form-control-feedback">
+										<i class="icon-reading text-muted"></i>
+									</div>
+								</div>
+								<div class="form-group form-group-feedback form-group-feedback-left">
+									<input type="search" name = "minKm"class="form-control" placeholder="Min Km">
+									<div class="form-control-feedback">
+										<i class="icon-reading text-muted"></i>
+									</div>
+								</div>
+						</div>
+					</div>
+					<!-- /Km -->
+					
+					<button type="submit" class="btn bg-blue btn-block">
+						<i class="icon-search4 font-size-base mr-2"></i>
+						Filtrele
+					</button>
+				</form>
+			</div>
+		</div>
+		<!-- /filter -->
+	</div>
+	<!-- /sidebar content -->
+
+</div>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%-include("partials/head") %>
+</head>
+
+<body>
+    <% if(isLogged){%>
+        <%- include('partials/KullanıcılıNavbar')  %>
+    <%} %> 
+    <% if(!isLogged){%>
+        <%- include('partials/KayıtOlNavbar')  %>
+    <%} %>
+    <div class="page-content">
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="card">
+                    <div class="card-header header-elements-inline">
+                        <h5 class="card-title">İlan Kayıt Formu </h5>
+                        <div class="header-elements">
+                            <div class="list-icons">
+                                <a class="list-icons-item" data-action="collapse"></a>
+                                <a class="list-icons-item" data-action="reload"></a>
+                                <a class="list-icons-item" data-action="remove"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="/api/ads/advertise" method="POST" >
+                            <fieldset>
+                                <legend class="font-weight-semibold text-uppercase font-size-sm">
+                                    <i class="icon-file-text2 mr-2"></i>
+                                    İlan içeriklerini girin
+                                    <a class="float-right text-default" data-toggle="collapse" data-target="#demo1">
+                                        <i class="icon-circle-down2"></i>
+                                    </a>
+                                </legend>
+
+                                <div class="collapse show" id="demo1">
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">İlanınızın başlığı</label>
+                                        <div class="col-lg-9">
+                                            <input required type="text" name="title" class="form-control" required
+                                                minlength="6" maxlength="150" placeholder="Bir başlık giriniz">
+                                            <span>Dikkat çekilebilir şeyler yazmak sizi bir adım öteye götürür.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Fiyat(₺)</label>
+                                        <div class="col-lg-9">
+                                            <input required type="number" name="price" class="form-control" required
+                                                placeholder="Aracınıza belirlediğniz değer (₺)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">İl</label>
+                                        <div class="col-lg-3">
+                                            <select id="city" name="city" class="form-control" data-placeholder="Seçin"
+                                                id="city">
+                                                <option value="">Seçin...</option>
+                                                <% for(var i = 1 ; i<82;i++){ %>
+                                                <option value=<%=`${i}`%>><%=`${cities[`${i}`]}`%></option>
+
+                                                <% } %>
+
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 text-center">
+                                            <label class="col-form-label">İlçe</label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <select disabled  id="dorm"  name="town" class="form-control" data-placeholder="Seçin"
+                                                id="city">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">İlanınıza açıklama ekleyin</label>
+                                        <div class="col-lg-9">
+                                            <textarea name="description" rows="5" cols="5" class="form-control"
+                                                placeholder="Açıklama yazın"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend class="font-weight-semibold text-uppercase font-size-sm">
+                                    <i class="icon-reading mr-2"></i>
+                                    Arabanızı detaylandırın
+                                    <a class="float-right text-default" data-toggle="collapse" data-target="#demo2"
+                                        aria-expanded="true">
+                                        <i class="icon-circle-down2"></i>
+                                    </a>
+                                </legend>
+
+                                <div class="collapse show" id="demo2">
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Arabanızın markası</label>
+                                        <div class="col-lg-9">
+                                            <select name="brand" id = "brand"data-placeholder="Marka" class="form-control"
+                                                data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="">Seçin...</option>
+                                                <% for(var i = 1 ; i<carbrands.length;i++){ %>
+                                                    <option value=<%=`${carbrands[i].brand}`%>><%=`${carbrands[i].brand.toUpperCase()}`%></option>
+    
+                                                    <% } %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Arabanızın serisi</label>
+                                        <div class="col-lg-9">
+                                            <select disabled id = "series"name="series" data-placeholder="Seri" class="form-control"
+                                                data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option  value="">Seçin...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Model</label>
+                                        <div class="col-lg-9">
+                                            <input required type="text" name="model" class="form-control" required
+                                                placeholder="Model">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Yıl</label>
+                                        <div class="col-lg-3">
+                                            <input type="number" name="year" class="form-control" required
+                                                placeholder="Aracınızın üretilme yılı">
+                                        </div>
+                                        <label class="col-lg-3 col-form-label text-center">Km</label>
+                                        <div class="col-lg-3">
+                                            <input type="number" name="km" class="form-control" required
+                                                placeholder="Kilometre">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Vites</label>
+                                        <div class="col-lg-3">
+                                            <select name="gear" data-placeholder="Vites" class="form-control"
+                                                data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="manuel">Manuel</option>
+                                                <option value="otomatik">Otomatik</option>
+                                                <option value="yarı otomatik">Yarı Otomatik</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-lg-3 col-form-label text-center">Yakıt</label>
+                                        <div class="col-lg-3">
+                                            <select name="fuel" data-placeholder="Yakıt" class="form-control"
+                                                data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="benzin">Benzin</option>
+                                                <option value="benzin & LPG">Benzin & LPG</option>
+                                                <option value="dizel">Dizel</option>
+                                                <option value="elektrik">Elektrik</option>
+                                                <option value="hybrid">Hybrid</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Motor Gücü</label>
+                                        <div class="col-lg-3">
+                                            <input type="number" name="engine_power" class="form-control" required
+                                                placeholder="Beygir">
+                                        </div>
+                                        <label class="col-lg-3 col-form-label text-center">Motor Hacmi</label>
+                                        <div class="col-lg-3">
+                                            <input type="text" name="engine_volume" class="form-control" required
+                                                placeholder="m³">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Çekiş</label>
+                                        <div class="col-lg-3">
+                                            <select name="car_traction" data-placeholder="Çekiş" class="form-control"
+                                                data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="önden">Önden</option>
+                                                <option value="arkadan">Arkadan</option>
+                                                <option value="4x4">4x4</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-lg-3 col-form-label text-center">Renk</label>
+                                        <div class="col-lg-3">
+                                            <input type="text" name="color" class="form-control" required
+                                                placeholder="Aracınızın rengi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Aracınızda hasar kaydı var mı</label>
+                                        <div class="col-lg-3">
+                                            <select name="isDamaged" data-placeholder="Takas istiyor musunuz?"
+                                                class="form-control" data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="true">Evet</option>
+                                                <option value="false">Hayır</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-lg-3 col-form-label text-center">Hasar Miktarı(₺)</label>
+                                        <div class="col-lg-3">
+                                            <input required type="number" name="damageAmount" class="form-control"
+                                                required placeholder="Hasar miktarı (₺)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Uyruk</label>
+                                        <div class="col-lg-3">
+                                            <select name="plate_nation" class="form-control" data-fouc="" tabindex="-1"
+                                                aria-hidden="false">
+                                                <option value="tr">Türkiye</option>
+                                                <option value="foreign">Yabancı</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-lg-3 col-form-label text-center">Takas</label>
+                                        <div class="col-lg-3">
+                                            <select name="trade" data-placeholder="Takas istiyor musunuz?"
+                                                class="form-control" data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="true">Evet</option>
+                                                <option value="false">Hayır</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Durumu</label>
+                                        <div class="col-lg-3">
+                                            <select name="status" data-placeholder="Durum" class="form-control"
+                                                data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="ikinci el">İkinci El</option>
+                                                <option value="sıfır">Sıfır</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-lg-3 col-form-label text-center">Garanti</label>
+                                        <div class="col-lg-3">
+                                            <select data-placeholder="Garantisi var mı?" class="form-control"
+                                                data-fouc="" tabindex="-1" aria-hidden="false">
+                                                <option value="true">Evet</option>
+                                                <option value="false">Hayır</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label">Kimden</label>
+                                        <div class="col-lg-9">
+                                            <select name="from" class="form-control" data-fouc="" tabindex="-1"
+                                                aria-hidden="false">
+                                                <option value="sahibinden">Sahibinden</option>
+                                                <option value="galeriden">Galeriden</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">Submit form <i
+                                        class="icon-paperplane ml-2"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        
+        fetch("/json/il-ilce.json")
+        .then(response => response.json())
+        .then(data =>{
+            var city= document.getElementById("city")
+            var dorm= document.getElementById("dorm");
+            city.addEventListener("change",()=>{
+                dorm.innerHTML="";
+                for(var a = 0; a<data.length;a++){
+                    if(data[a].il_id === city.value){
+                        dorm.innerHTML += `<option value=${data[a].id}>${data[a].name}</option>`
+                    }
+                }
+                dorm.disabled = false;
+                
+            });
+        });
+
+        fetch("/json/cars.json")
+        .then(response => response.json())
+        .then(data =>{
+            
+            var brand= document.getElementById("brand")
+            var series= document.getElementById("series");
+            var x;
+            brand.addEventListener("change",()=>{
+                series.innerHTML= "";
+                series.disabled = false
+                for(var a = 0; a<data.length;a++){
+                    if(data[a].brand === brand.value){
+                        console.log(data[a].brand);
+                        console.log(data[a].models);
+                        for(var b = 0; b<data[a].models.length;b++){
+                            series.innerHTML += `<option value=${data[a].models[b]}>${data[a].models[b].toUpperCase()}</option>`
+                        }
+                        break;
+                      
+                    }
+                }
+               
+                
+
+
+                
+            });
+
+        });
+
+        
+
+
+
+
+    </script>
+</body>
+
+</html>

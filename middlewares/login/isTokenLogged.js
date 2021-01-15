@@ -2,30 +2,25 @@ const jwt = require("jsonwebtoken");
 const CustomError = require("../../helpers/error/customError");
 
 
-const isLoggedIn = function(req,res,next){
-    let a ;
-    let authorizationToken;
-    console.log(req.rawHeaders);
-    for(var i = 0; i<req.rawHeaders.length; i++){
-        if(req.rawHeaders[i].includes("access_token")){
-            authorizationToken = req.rawHeaders[i].split("=")[1]; 
-            break;
-        }
-    }
-    if(authorizationToken){
-        const decodedJWT = jwt.decode(authorizationToken);
-
-        if(Date.now()/1000<decodedJWT.exp) next( new CustomError("You are already logged in", 400))
-        next();
-    }
-    next();
-   
+const isLogged = function(req,res,next){
+    var token = req.cookies.access_token
+   /*  console.log(token);
+    console.log("selam231"); */
+    req.isLogged  = false;
     
+    jwt.verify(token,process.env.JWT_KEY,(err,decoded)=>{
+        if(decoded){
+            req.isLogged=true;
+            req.logged = decoded;
+        }
+    })
 
+    next();
+    
 }
 
 
-module.exports = {isLoggedIn};
+module.exports = {isLogged};
 
 
 

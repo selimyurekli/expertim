@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<%- include("partials/head") %>
+
+</head>
+
+
+<body>
+	<%- include("partials/KullanıcılıNavbar") %>
+	<div class="page-content">
+
+		<%- include("partials/leftNav") %>
+		
+		<div class="content-wrapper">
+				<!-- Cover area -->
+				<div class="profile-cover">
+					<div class="profile-cover-img"
+						style="background-image: url(../../../../global_assets/images/placeholders/cover.jpg)"></div>
+					<div class="media align-items-center text-center text-md-left flex-column flex-md-row m-0">
+						<div class="mr-md-3 mb-2 mb-md-0">
+							<a href="#" class="profile-thumb">
+								<img src=<%=`/profile_images/${user.profile_image}`%> class="border-white" width="48"
+									height="48" alt="">
+							</a>
+						</div>
+
+						<div class="media-body text-white">
+							<h1 class="mb-0"><%= user.name %> </h1>
+							<span class="d-block">Son güncelleme: <%=user.updatedAt %> </span>
+						</div>
+
+
+					</div>
+				</div>
+				<!-- /cover area -->
+
+
+
+
+				<!-- Content area -->
+				<div class="content">
+
+					<!-- Inner container -->
+					<div class="d-flex align-items-start flex-column flex-md-row">
+
+						<!-- Left content -->
+						<div class="tab-content w-100 order-2 order-md-1">
+							<div class="tab-pane fade active show" id="activity">
+								<div class="card">
+									<div class="card-header header-elements-inline">
+										<h5 class="card-title">Profil Bilgileri</h5>
+										<div class="header-elements">
+											<div class="list-icons">
+												<a class="list-icons-item" data-action="collapse"></a>
+												<a class="list-icons-item" data-action="reload"></a>
+												<a class="list-icons-item" data-action="remove"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="card-body">
+										<form id="infos" action="/api/auth/update" method="POST">
+											<div class="form-group">
+												<div class="row">
+													<div class="col-md-6">
+														<label>İsim</label>
+														<input name="name" type="text" value="<%=user.name%>"
+															class="form-control">
+													</div>
+													<div class="col-md-6">
+														<label>Website</label>
+														<input name="website" type="text" placeholder="Belirtilmedi"
+															value="<%=user.website%>" class="form-control">
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<div class="row">
+													<div class="col-md-4">
+														<label>İnstagram</label>
+														<input name="instagram" placeholder="Belirtilmedi" type="text"
+															value="<%=user.instagram?user.instagram:""%>"
+															class="form-control">
+													</div>
+													<div class="col-md-4">
+														<label>Facebook</label>
+														<input name="facebook" placeholder="Belirtilmedi" type="text"
+															value="<%=user.facebook?user.facebook:""%>"
+															class="form-control">
+													</div>
+													<div class="col-md-4">
+														<label>Twitter</label>
+														<input name="twitter" placeholder="Belirtilmedi" type="text"
+															value="<%=user.twitter?user.twitter:""%>"
+															class="form-control">
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="row">
+													<div class="col-md-6">
+														<label>İl</label>
+														<input name="city" placeholder="Belirtilmedi" type="text"
+															value="<%=user.city?user.city:""%>" class="form-control">
+													</div>
+													<div class="col-md-6">
+														<label>İlçe</label>
+														<input name="town" placeholder="Belirtilmedi" type="text"
+															value="<%=user.town?user.town:""%>" class="form-control">
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<div class="row">
+													<div class="col-md-6">
+														<label>Email</label>
+														<input type="text" readonly="readonly" value="<%=user.email%>"
+															class="form-control">
+													</div>
+													<div class="col-md-6">
+														<label>Ülke</label>
+														<input type="text" readonly="readonly" value="Türkiye"
+															class="form-control">
+													</div>
+													<!-- <div class="col-md-6">
+													<label>Ülke</label>
+													<select
+														class="form-control form-control-select2 select2-hidden-accessible"
+														data-fouc="" tabindex="-1" aria-hidden="true">
+														<option value="germany" selected="">Germany</option>
+														<option value="france">France</option>
+														<option value="spain">Spain</option>
+														<option value="netherlands">Netherlands</option>
+														<option value="other">...</option>
+														<option value="uk">United Kingdom</option>
+													</select><span
+														class="select2 select2-container select2-container--default"
+														dir="ltr" style="width: 100%;"><span class="selection"><span
+																class="select2-selection select2-selection--single"
+																role="combobox" aria-haspopup="true"
+																aria-expanded="false" tabindex="0"
+																aria-labelledby="select2-gw96-container"><span
+																	class="select2-selection__rendered"
+																	id="select2-gw96-container"
+																	title="Germany">Germany</span><span
+																	class="select2-selection__arrow"
+																	role="presentation"><b
+																		role="presentation"></b></span></span></span><span
+															class="dropdown-wrapper" aria-hidden="true"></span></span>
+												</div> -->
+												</div>
+											</div>
+
+											<div class="form-group">
+												<div class="row">
+													<div class="col-md-12">
+														<label>Telefon (5XX XXX XXXX)</label>
+														<input type="tel" pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
+															name="phone" placeholder="(_ _ _) (_ _ _) (_ _ _ _)"
+															value="<%=user.phone%>" class="form-control">
+														<span class="form-text text-muted"> </span>
+													</div>
+												</div>
+											</div>
+
+											<div class="text-right">
+												<button type="submit" id="change" disabled
+													class="btn btn-success">Değişiklikleri kaydet</button>
+											</div>
+										</form>
+										<br>
+
+										<form action="/api/auth/imageupload" method="post"
+											enctype="multipart/form-data">
+											<div class="col-md-12">
+												<label> Profil Fotoğrafı Yükle</label>
+												<div class="uniform-uploader">
+													<input type="file" onchange=showname() id="fileInput"
+														name="profile_image" class="form-input-styled"><span id="span"
+														class="filename">No file
+														selected</span>
+													<span class="action btn bg-warning"
+														style="user-select: none;">Choose
+														File</span>
+												</div>
+												<span class="form-text text-muted">Accepted formats: gif, png, jpg,
+													jpeg.
+													Max file size 2Mb</span>
+											</div>
+											<div class="text-right">
+												<button type="submit" id="change" class="btn btn-warning">Profil
+													Fotoğrafını
+													Yükle</button>
+											</div>
+										</form>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="tab-pane fade" id="schedule">
+
+
+							</div>
+
+							<div class="tab-pane fade" id="settings">
+
+								<!-- Profile info -->
+								<div class="card">
+									<div class="card-body">
+
+									</div>
+								</div>
+								<!-- /profile info -->
+
+
+							</div>
+						</div>
+						<!-- /left content -->
+
+
+						<!-- Right sidebar component -->
+						<div
+							class="sidebar sidebar-light bg-transparent sidebar-component sidebar-component-right wmin-300 border-0 shadow-0 order-1 order-lg-2 sidebar-expand-md">
+
+							<!-- Sidebar content -->
+							<div class="sidebar-content">
+
+								<!-- Navigation -->
+								<div class="card">
+									<div class="card-header bg-transparent header-elements-inline">
+										<span class="card-title font-weight-semibold">İlanlarım</span>
+
+										<div class="header-elements">
+											<div class="list-icons">
+												<a class="list-icons-item" data-action="collapse"></a>
+											</div>
+										</div>
+
+									</div>
+
+									<%for(var a = 0;a<user.ads.length;a++){%>
+									<%if(a%2==0) {%>
+									<div class="card bg-blue-400"
+										style="  margin-top:3px ;margin-left:8px;margin-right: 8px;background-image: url(../../../../global_assets/images/backgrounds/panel_bg.png); background-size: contain;">
+										<%}else{  %>
+										<div class="card bg-blue-400"
+											style="  margin-top:3px ;margin-left:8px;margin-right: 8px;background-image: url(../../../../global_assets/images/backgrounds/panel_bg.png); background-size: contain;">
+											<% } %>
+
+
+											<div class="card-body text-center">
+												<div class="card-img-actions d-inline-block mb-3">
+													<img class="img-fluid"
+														src=<%=`/ad_images/ad_images_${user.ads[a]._id}/ad_image_1.jpeg` %>
+														width="170" height="170" alt="">
+												</div>
+												<h6 class="font-weight-semibold mb-0">
+													<%=user.ads[a].brand.slice(0,1).toUpperCase()+user.ads[a].brand.slice(1)%>
+													<%=user.ads[a].series%> </h6>
+												<span class="d-block opacity-100"><%= user.ads[a].price%>₺,
+													<%=user.ads[a].year %> </span>
+												<%if(user.ads[a].isChecked&&user.ads[a].isApproved){%>
+												<span class="d-block font-weight-black  text-success">Onaylandı</span>
+												<%}else if(!(user.ads[a].isChecked)){ %>
+												<p class="d-block font-weight-black">
+												<p class="d-block font-weight-black  text-warning">Expert tarafından
+													inceleniyor</p>
+												</p>
+												<%}else if(!(user.ads[a].isChecked)&&!(user.ads[a].isApproved)){ %>
+												<span class="d-block font-weight-bold text-danger">Onaylanmadı</span>
+												<%}%>  
+											<a href=<%=`/api/ads/specific/${user.ads[a]._id}` %> ><button type="button"
+													class="btn btn-success btn-labeled btn-labeled-left btn-sm legitRipple"><b><i
+															class="icon-pin-alt"></i></b> İncele</button></a>
+
+											</div>
+										</div>
+										<% } %>
+									</div>
+									<!-- /navigation -->
+
+								</div>
+								<!-- /sidebar content -->
+
+							</div>
+							<!-- /right sidebar component -->
+
+						</div>	
+						<!-- /inner container -->
+
+					</div>
+					<!-- /content area -->
+				</div>
+
+			</div>
+
+
+		</div>
+
+		<%- include("partials/footer") %>
+
+
+
+
+
+
+
+
+	</div>
+
+
+	<script>
+		var btn = document.getElementById("change")
+		$("#infos").change(function () {
+			btn.disabled = false;
+		});
+		function showname() {
+			var name = document.getElementById('fileInput');
+			var span = document.getElementById('span');
+			span.innerHTML = name.files[0].name;
+		};
+	</script>
+
+</body>
+
+</html>

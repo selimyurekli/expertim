@@ -1,0 +1,72 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 17/04/2020 16:09
+  	*/
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff2") format("woff2"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}
+
+.flaticon-atm:before { content: "\f100"; }
+.flaticon-changing-room:before { content: "\f101"; }
+.flaticon-changing-room-1:before { content: "\f102"; }
+.flaticon-pump:before { content: "\f103"; }
+.flaticon-pump-1:before { content: "\f104"; }
+.flaticon-starbucks:before { content: "\f105"; }
+.flaticon-food:before { content: "\f106"; }
+.flaticon-playground:before { content: "\f107"; }
+.flaticon-playground-1:before { content: "\f108"; }
+.flaticon-playground-2:before { content: "\f109"; }
+.flaticon-wc:before { content: "\f10a"; }
+.flaticon-wc-1:before { content: "\f10b"; }
+.flaticon-wc-2:before { content: "\f10c"; }
+.flaticon-toilet:before { content: "\f10d"; }
+.flaticon-charger:before { content: "\f10e"; }
+.flaticon-charger-1:before { content: "\f10f"; }
+.flaticon-battery:before { content: "\f110"; }
+.flaticon-cart:before { content: "\f111"; }
+.flaticon-shopping-cart:before { content: "\f112"; }
+.flaticon-market:before { content: "\f113"; }
+.flaticon-mosque:before { content: "\f114"; }
+.flaticon-mosque-1:before { content: "\f115"; }
+.flaticon-buffet:before { content: "\f116"; }
+.flaticon-food-1:before { content: "\f117"; }
+.flaticon-fork:before { content: "\f118"; }
+.flaticon-gift:before { content: "\f119"; }
+.flaticon-gift-1:before { content: "\f11a"; }
+.flaticon-car-wash:before { content: "\f11b"; }
+.flaticon-car-service:before { content: "\f11c"; }
+.flaticon-car-service-1:before { content: "\f11d"; }
+.flaticon-motel:before { content: "\f11e"; }
+.flaticon-energy:before { content: "\f11f"; }
+.flaticon-fuel:before { content: "\f120"; }
+.flaticon-fuel-1:before { content: "\f121"; }
+.flaticon-petroleum:before { content: "\f122"; }
+.flaticon-fuel-2:before { content: "\f123"; }
+.flaticon-gas:before { content: "\f124"; }
+.flaticon-gasoline:before { content: "\f125"; }
+.flaticon-fuel-3:before { content: "\f126"; }
+.flaticon-gas-station:before { content: "\f127"; }

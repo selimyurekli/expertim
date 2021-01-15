@@ -1,21 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const {register,login,forgotPassword,resetPassword,logout, imageUpload, update,getUser,verifyAccount} = require("../controller/auth");
-const {isLoggedIn} = require("../middlewares/login/isTokenLogged");
+const {getRegisterPage,getResetPasswordPage,getLoginPage,getForgotPasswordPage,register,login,forgotPassword,resetPassword,logout, imageUpload, update,getUser,verifyAccount} = require("../controller/auth");
 router.use(express.json());
 const {profileImageUpload} = require("../helpers/images/imageUpload");
 const {getAccessToRoute}  = require("../middlewares/authorization/auth");
 
 
-router.post("/register",register);
-router.post("/login",login);
-router.get("/profile",getAccessToRoute,getUser);
-router.get("/verifyaccount/:id",verifyAccount)
-router.post("/forgotpassword", forgotPassword);
-router.put("/resetpassword", resetPassword);
-router.get("/logout",getAccessToRoute, logout);
-router.put("/imageupload",[getAccessToRoute,profileImageUpload.single("profile_image")], imageUpload);
-router.put("/update",getAccessToRoute,update);
+router.post("/register",register);//done
+router.get("/register",getRegisterPage)//done
+router.get("/login",getLoginPage);//done
+router.post("/login",login);//done
+router.get("/verifyaccount/:id",verifyAccount)//done
+router.post("/forgotpassword", forgotPassword);//done
+router.get("/forgotpassword", getForgotPasswordPage);//done
+router.post("/resetpassword", resetPassword);//done
+router.get("/resetpassword", getResetPasswordPage);//done
+router.get("/logout",getAccessToRoute, logout);//done
+router.get("/profile",getAccessToRoute,getUser);//done    
+router.post("/imageupload",[getAccessToRoute,profileImageUpload.single("profile_image")], imageUpload);//done
+router.post("/update",getAccessToRoute,update);//done
 
 
 module.exports = router;
